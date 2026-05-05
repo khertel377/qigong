@@ -174,7 +174,7 @@
 
   /* ── SEQUENCE SELECTOR CARDS ── */
   .seq-intro { font-family: 'Space Mono', monospace; font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--mist); margin-bottom: clamp(18px, 3.5vh, 32px); }
-  .seq-cards { display: flex; gap: 14px; justify-content: center; width: 100%; max-width: 500px; }
+  .seq-cards { display: flex; gap: 14px; justify-content: center; width: 100%; max-width: 720px; flex-wrap: wrap; }
   .seq-card {
     flex: 1;
     padding: 18px 16px;
@@ -452,6 +452,11 @@
         <div class="seq-channels">Gallbladder · Liver<br>Bladder · Kidney · hip chain</div>
         <div class="seq-time">6 moves · ~11 min</div>
       </div>
+      <div class="seq-card" id="card-wildheaven" onclick="selectSequence('wildheaven')">
+        <h2>Wild Heaven</h2>
+        <div class="seq-channels">Heart · Pericardium<br>Triple Burner · Liver yang</div>
+        <div class="seq-time">6 moves · ~9 min · fierce</div>
+      </div>
     </div>
     <div class="begin-wrap">
       <button class="btn btn-primary" onclick="beginSession()">Begin</button>
@@ -472,6 +477,7 @@
         <div class="seq-dropdown" id="seq-dropdown">
           <button class="active" id="seqdrop-godhole" onclick="switchSequenceInline('godhole')">Empty Pillar</button>
           <button id="seqdrop-lowerchain" onclick="switchSequenceInline('lowerchain')">Earth Gate</button>
+          <button id="seqdrop-wildheaven" onclick="switchSequenceInline('wildheaven')">Wild Heaven</button>
         </div>
       </div>
       <!-- Controls — pushed right -->
@@ -566,9 +572,24 @@ const lowerChainMoves = [
   { name:"Closing Earth Stance", chinese:"歸根 / Guī gēn", duration:90, channel:"Spleen · Stomach · all lower channels", tempo:"Settling · very slow breath · continuous", description:"feet parallel, shoulder-width, arms at sides, eyes soft", cues:["Feet parallel, shoulder width — the earth receives you completely.","With each exhale, feel the lower body become heavier and more settled.","The Spleen channel runs the inner leg from foot to groin — feel it knitting.","The Stomach channel runs the front of the thigh — let it soften and release.","This move asks nothing of you — it only receives what the sequence has opened.","You are not finishing. You are arriving."], anim:'earthSettle' },
 ];
 
+// ── Wild Heaven — fierce/expressive yang sequence ──────────────────────────
+// The yang counterpart to Earth Gate. Heart · Pericardium · Triple Burner ·
+// Liver yang · Fire element. Built as a kata: gather → strike → spiral →
+// raise → release → return. Designed so each move's ending posture flows
+// into the next move's start (matters when flow mode lands).
+const wildHeavenMoves = [
+  { name:"Gathering the Fire", chinese:"聚火 / Jù huǒ", duration:90, channel:"Triple Burner · Pericardium", tempo:"4-in / 4-out · ball expands and condenses", description:"horse stance, palms facing each other in front of dan tian, cradling a growing ember", cues:["Hands cradle a ball of qi at the dan tian — palms facing, not touching.","Inhale: hands draw apart and rise to chest, ball expanding outward.","Exhale: hands compress back toward dan tian, ball condensing denser.","Each cycle the ball grows hotter. Feel Laogong (PC-8) at each palm center light up.","This is the charging move. Don't rush — set the floor of the energy."], anim:'gatherFire' },
+  { name:"Piston & Pull", chinese:"推拉 / Tuī lā", duration:90, channel:"Heart · Pericardium · Lung", tempo:"Sharp breath · 6 cycles per side · alternate", description:"horse stance, fists at hips, elbows back, ready to push and pull", cues:["One fist drives forward into a palm strike — fingers spreading at full extension.","The other fist simultaneously pulls back to the hip, gripping a heavy rope.","Sharp exhale — HA! — on each push. Two intentions, one breath.","The push comes from the spine through the kua, out through Laogong (PC-8).","The pull is active — shoulder blade gathers force back into the body.","Waist rotates slightly toward the pulling side. Then mirror."], anim:'pistonPull' },
+  { name:"Spiraling Dragon", chinese:"盤龍 / Pán lóng", duration:90, channel:"Liver · Du Mai · Heart", tempo:"3-in / 3-out · 6 strikes per side", description:"horse stance, hands at chest, ready to spiral the spine", cues:["The waist drives the strike — not the arm. Spine rotates first.","Right palm strikes diagonally across the body, left palm pulls back to the hip.","Inhale at center, exhale on the strike. Then mirror to the other side.","Liver yang rising — channel runs up the inner leg, through the diaphragm, out the hand.","Eyes follow the striking palm. The whole body is the spear."], anim:'spiralDragon' },
+  { name:"Raising the Sphere", chinese:"舉天球 / Jǔ tiān qiú", duration:90, channel:"Heart · Du Mai · all yang", tempo:"6-in long / 6-out long · 4 cycles · the peak", description:"horse stance, hands together at dan tian, palms up, cradling a sphere", cues:["Hands together at the dan tian, palms up, cradling a sphere of light.","Slow inhale: hands rise up the centerline — past navel, heart, throat, crown.","Above the head, palms turn upward and press the sky. Hold the peak.","Exhale: hands open wide and circle slowly down through wing arcs back to dan tian.","This is the peak. Sustained, not frantic. The whole body lifts and returns."], anim:'raiseSphere' },
+  { name:"Shaking the Tree", chinese:"抖樹 / Dǒu shù", duration:90, channel:"Triple Burner · all channels", tempo:"Fast loose shake · natural breath · let it find its rhythm", description:"wide stance, knees soft, arms hang loose, ready to shake fast and free", cues:["Whole body shakes — fast, loose, fascia-releasing. Arms hang and rattle.","Knees bounce gently. Let the spine ripple. Nothing is held tight.","Mouth slightly open. Breath is natural — sometimes audible exhales.","This is the dissipation. The charge built up has somewhere to go.","Don't perform the shake — let it happen. It finds its own rhythm.","Slow it down only when your body asks to settle."], anim:'shakeTree' },
+  { name:"Returning to the Center", chinese:"歸中 / Guī zhōng", duration:60, channel:"Heart · all channels", tempo:"6-in / 8-out · long and natural · ~6 cycles", description:"feet parallel, shoulder-width, hands resting one over the other at the dan tian", cues:["Feet narrow back to parallel, shoulder-width.","Hands rise slowly to the dan tian, one palm over the other.","The fire has been raised, expressed, shaken loose. Now it returns to the center.","This is charged stillness — a different flavor of arrival than gentle closing.","Long slow breath. Let the heat settle into the lower belly as warmth, not activation."], anim:'returnCenter' }
+];
+
 const sequences = {
   godhole:    { moves, completeMsg: 'Rest a moment. Let the axis settle.<br>The pillar — empty, present, alive.' },
-  lowerchain: { moves: lowerChainMoves, completeMsg: 'Rest. Let the lower body integrate.<br>Feel the earth gate settling.' }
+  lowerchain: { moves: lowerChainMoves, completeMsg: 'Rest. Let the lower body integrate.<br>Feel the earth gate settling.' },
+  wildheaven: { moves: wildHeavenMoves, completeMsg: 'The fire is gathered, expressed, and returned.<br>Charged stillness. Heart at rest.' }
 };
 
 // ═══════════════ PIXEL ANIMATION ENGINE ══════════════════════
@@ -1217,6 +1238,365 @@ const anims = {
       ctx.fillStyle=`rgba(143,168,160,${g*0.35})`;
       ctx.fillRect((cx-5)*PX,(cy+2)*PX,10*PX,PX);
     }
+  },
+
+  // ── Wild Heaven — fierce yang sequence ─────────────────────────────────
+
+  // 1. Gathering the Fire — horse stance, hands cradle a breathing ball at chest
+  gatherFire(ctx, t) {
+    bg(ctx);
+    const cx=33, cy=57, squat=2;
+    const cycle=8;
+    const breath=(Math.sin(t*(2*Math.PI/cycle))+1)/2; // 0=condensed, 1=expanded
+    const sp=neutralSpine(0);
+    // Hands form a ball at chest height. Apart on inhale (breath=1), close on exhale (breath=0).
+    const ballY = cy-9;
+    const handSpread = 2 + Math.round(breath*4);   // 2 close → 6 apart
+    const handRise = Math.round(breath*1.5);        // hands lift slightly on expansion
+    const elbowDrop = 1;
+    figure(ctx, cx, cy-squat, sp,
+      // Left arm: shoulder → elbow → hand at left palm of ball
+      [{x:cx-1,y:cy-squat-11},{x:cx-3,y:cy-squat-11+elbowDrop},{x:cx-handSpread,y:ballY-handRise}],
+      // Right arm: shoulder → elbow → hand at right palm of ball
+      [{x:cx+1,y:cy-squat-11},{x:cx+3,y:cy-squat-11+elbowDrop},{x:cx+handSpread,y:ballY-handRise}],
+      2, squat
+    );
+    // The breathing ball — qi between palms, glow scales with expansion
+    const glowA = 0.2 + breath*0.7;
+    const ballR = 1 + Math.round(breath*2);
+    for(let dx=-ballR; dx<=ballR; dx++){
+      for(let dy=-ballR; dy<=ballR; dy++){
+        const d = Math.sqrt(dx*dx+dy*dy);
+        if(d <= ballR){
+          const fade = (1 - d/ballR) * glowA;
+          ctx.fillStyle=`rgba(232,212,160,${fade})`;
+          ctx.fillRect((cx+dx)*PX,(ballY-handRise+dy)*PX,PX,PX);
+        }
+      }
+    }
+    // Small ember at ball center
+    dot(ctx, cx, ballY-handRise, COL.spine);
+    label(ctx, 2, 43, 'Laogong');
+  },
+
+  // 2. Piston & Pull — alternating push/pull strikes from horse stance
+  pistonPull(ctx, t) {
+    bg(ctx);
+    const cx=33, cy=57, squat=2;
+    const cycle=4;
+    const c=t%cycle;
+    const half=cycle/2;
+    // Side alternates each half-cycle. side='R' means RIGHT arm pushes, LEFT arm pulls.
+    const side = (Math.floor(t/half) % 2 === 0) ? 'R' : 'L';
+    const phase = (c % half) / half; // 0..1 within this side
+    // Push extends out, peaks mid-phase, holds, returns
+    let pushAmt;
+    if(phase<0.4) pushAmt = phase/0.4;       // launching out
+    else if(phase<0.7) pushAmt = 1;          // held at extension (the strike held)
+    else pushAmt = 1 - (phase-0.7)/0.3;      // pulling back
+    // Slight waist rotation toward the pulling side — drives the push.
+    // Right arm pushes (side='R') → rotation pulls left side back, twisting body rightward.
+    const rot = (side==='R'?1:-1) * 0.5 * pushAmt;
+    const sp=[];
+    for(let i=0;i<7;i++) sp.push({dx:rot*(i/8),dy:i*2});
+    const verts=sp.map(o=>({x:cx+o.dx,y:cy-squat-o.dy}));
+    for(let i=0;i<verts.length-1;i++){
+      const col=(i>=2&&i<=4)?COL.spine:COL.body;
+      line(ctx,verts[i].x,verts[i].y,verts[i+1].x,verts[i+1].y,col);
+    }
+    // Head
+    const h=verts[6];
+    dot(ctx,h.x-1,h.y-1,COL.body);dot(ctx,h.x,h.y-1,COL.body);dot(ctx,h.x+1,h.y-1,COL.body);
+    dot(ctx,h.x,h.y-3,COL.body);dot(ctx,h.x-1,h.y,COL.body);dot(ctx,h.x+1,h.y,COL.body);
+    // Legs — wide horse stance
+    const p=verts[0];
+    line(ctx,p.x,p.y,p.x-4,p.y+1,COL.body); line(ctx,p.x-4,p.y+1,p.x-5,p.y+3,COL.body);
+    line(ctx,p.x,p.y,p.x+4,p.y+1,COL.body); line(ctx,p.x+4,p.y+1,p.x+5,p.y+3,COL.body);
+
+    // Two distinct shoulders, anchored to the rotating spine.
+    // Left shoulder is at verts[5] minus 1, right shoulder is verts[5] plus 1.
+    const shY = verts[5].y;
+    const lShX = verts[5].x - 1;
+    const rShX = verts[5].x + 1;
+
+    // Identify which shoulder is pushing and which is pulling based on `side`.
+    const pushShX  = (side==='R') ? rShX : lShX;
+    const pullShX  = (side==='R') ? lShX : rShX;
+    const pushSign = (side==='R') ? 1 : -1;   // direction the push arm extends
+    const hipSign  = -pushSign;                // pull fist comes home to OPPOSITE hip
+
+    // PUSHING ARM — extends straight out from its shoulder, palm at end.
+    const pushHandX = pushShX + pushSign * Math.round(2 + pushAmt*9);
+    line(ctx, pushShX, shY, pushHandX, shY, COL.body);
+    // Spread fingers at strike peak
+    if(pushAmt > 0.6){
+      const fA = (pushAmt-0.6)/0.4;
+      ctx.fillStyle=`rgba(232,212,160,${fA*0.9})`;
+      ctx.fillRect(pushHandX*PX, (shY-1)*PX, PX, PX);
+      ctx.fillRect(pushHandX*PX, (shY+1)*PX, PX, PX);
+      ctx.fillRect((pushHandX+pushSign)*PX, shY*PX, PX, PX);
+    }
+    // Force trail behind the strike — ember streak fading from palm outward
+    if(pushAmt > 0.7){
+      const trailA = (pushAmt-0.7)/0.3;
+      for(let i=1;i<=3;i++){
+        ctx.fillStyle=`rgba(184,92,56,${trailA*(0.5-i*0.12)})`;
+        ctx.fillRect((pushHandX+pushSign*i)*PX, shY*PX, PX, PX);
+      }
+    }
+
+    // PULLING ARM — same shoulder origin as anatomy, but elbow bent back, fist drawn home to hip.
+    // Pull intensity inverse to push (most "loaded" when push is mid-flight, cocked back when fully extended).
+    const pullDraw = 0.5 + pushAmt*0.5;  // 0.5 (cocked back) to 1.0 (fully drawn at peak)
+    const pullElbowX = pullShX + hipSign * Math.round(2 + pullDraw*1);
+    const pullElbowY = shY + 2;
+    const pullFistX = (cx + sp[1].dx) + hipSign * 2;  // fist drawn to OPPOSITE hip
+    const pullFistY = cy - squat - 2;
+    line(ctx, pullShX, shY, pullElbowX, pullElbowY, COL.body);
+    line(ctx, pullElbowX, pullElbowY, pullFistX, pullFistY, COL.body);
+    dot(ctx, pullFistX, pullFistY, COL.spine);  // fist marker (ember = active gather)
+  },
+
+  // 3. Spiraling Dragon — diagonal palm strikes driven by waist rotation
+  spiralDragon(ctx, t) {
+    bg(ctx);
+    const cx=33, cy=57, squat=2;
+    const cycle=6;
+    const c=t%cycle;
+    const half=cycle/2;
+    // side='R' means RIGHT arm strikes diagonally across the body, LEFT arm pulls back to hip
+    const side = (Math.floor(t/half) % 2 === 0) ? 'R' : 'L';
+    const phase = (c % half) / half;
+    // Strike profile: gather → strike → hold → recoil
+    let strike;
+    if(phase<0.3) strike = -phase/0.3;            // gather (negative = arm pulled in)
+    else if(phase<0.55) strike = (phase-0.3)/0.25; // launch out
+    else if(phase<0.75) strike = 1;                // peak hold
+    else strike = 1 - (phase-0.75)/0.25;           // return
+    strike = Math.max(0, strike);
+    // Waist rotation — sinusoidal across full cycle so the body smoothly twists
+    // toward the striking side and returns through neutral as it crosses to the other.
+    // Full cycle: 0→peak right, π→peak left, 2π→peak right. Aligned to strike-hold midpoint.
+    const sign = (side==='R') ? 1 : -1;
+    const rot = Math.sin(t * Math.PI*2 / cycle) * 1.8 * (0.4 + strike*0.6);
+    const sp=[];
+    for(let i=0;i<7;i++){
+      // Lower spine rotates less, upper rotates more — twist concentrated at thoracic
+      const tw = (i/6) * rot;
+      sp.push({dx:tw, dy:i*2});
+    }
+    const verts=sp.map(o=>({x:cx+o.dx,y:cy-squat-o.dy}));
+    for(let i=0;i<verts.length-1;i++){
+      const col=(i>=2&&i<=4)?COL.spine:COL.body;
+      line(ctx,verts[i].x,verts[i].y,verts[i+1].x,verts[i+1].y,col);
+    }
+    const h=verts[6];
+    dot(ctx,h.x-1,h.y-1,COL.body);dot(ctx,h.x,h.y-1,COL.body);dot(ctx,h.x+1,h.y-1,COL.body);
+    dot(ctx,h.x,h.y-3,COL.body);dot(ctx,h.x-1,h.y,COL.body);dot(ctx,h.x+1,h.y,COL.body);
+    // Legs — horse stance
+    const p=verts[0];
+    line(ctx,p.x,p.y,p.x-4,p.y+1,COL.body); line(ctx,p.x-4,p.y+1,p.x-5,p.y+3,COL.body);
+    line(ctx,p.x,p.y,p.x+4,p.y+1,COL.body); line(ctx,p.x+4,p.y+1,p.x+5,p.y+3,COL.body);
+
+    // Two distinct shoulders, anchored to the rotating upper spine
+    const shY = verts[5].y;
+    const lShX = verts[5].x - 1;
+    const rShX = verts[5].x + 1;
+    const strikeShX = (side==='R') ? rShX : lShX;
+    const pullShX   = (side==='R') ? lShX : rShX;
+
+    // STRIKING ARM — diagonal across the body, going up and outward in `sign` direction
+    const strikeX = strikeShX + sign*(2 + strike*8);
+    const strikeY = shY - strike*2;
+    line(ctx, strikeShX, shY, strikeX, strikeY, COL.body);
+    // Strike palm/glow at peak
+    if(strike > 0.6){
+      const sA = (strike-0.6)/0.4;
+      ctx.fillStyle=`rgba(232,212,160,${sA})`;
+      ctx.fillRect(strikeX*PX, strikeY*PX, PX, PX);
+      ctx.fillStyle=`rgba(184,92,56,${sA*0.6})`;
+      ctx.fillRect((strikeX+sign)*PX, strikeY*PX, PX, PX);
+    }
+    // PULLING ARM — fist drawn back to its own-side hip, elbow bent back
+    // The pulling arm is on the OPPOSITE side from the strike
+    const pullSign = -sign;  // pull arm extends back/down on the opposite side
+    const pullElbowX = pullShX + pullSign;
+    const pullElbowY = shY + 2;
+    const pullFistX = (cx + sp[1].dx) + pullSign*2;  // fist at the pulling-side hip
+    const pullFistY = cy - squat - 2;
+    line(ctx, pullShX, shY, pullElbowX, pullElbowY, COL.body);
+    line(ctx, pullElbowX, pullElbowY, pullFistX, pullFistY, COL.body);
+    dot(ctx, pullFistX, pullFistY, COL.spine);
+  },
+
+  // 4. Raising the Sphere — sphere rises up centerline, opens at crown, descends as wings
+  raiseSphere(ctx, t) {
+    bg(ctx);
+    const cx=33, cy=57, squat=2;
+    const cycle=12;
+    const c = t % cycle;
+    // Phase 0..0.5: hands rise together up centerline. 0.5..0.55: press the sky.
+    // 0.55..1: hands open into wing arcs and descend back to dan tian.
+    const phase = c/cycle;
+    const sp=neutralSpine(0);
+    // Slight crown lift on the rise
+    let crownLift = 0;
+    if(phase < 0.5) crownLift = phase * 0.5;
+    else if(phase < 0.55) crownLift = 0.25;
+    else crownLift = 0.25 * (1-(phase-0.55)/0.45);
+    figure(ctx, cx, cy-squat, sp, null, null, 2, squat);
+    // Override: draw arms manually based on sphere phase
+    let armDef;
+    if(phase < 0.5){
+      // Rising: hands together, palms up, climbing the centerline
+      const h = phase / 0.5; // 0..1
+      const handY = cy - squat - 2 - Math.round(h*16);  // dan tian → above crown
+      const elbowY = handY + 3;
+      const elbowSpread = 2 - Math.round(h*1);
+      // Both arms converge toward center as they rise
+      const handSpread = Math.max(0, 1 - Math.round(h*1));
+      // Left arm
+      line(ctx, cx-1, cy-squat-11, cx-elbowSpread, elbowY, COL.body);
+      line(ctx, cx-elbowSpread, elbowY, cx-handSpread, handY, COL.body);
+      // Right arm
+      line(ctx, cx+1, cy-squat-11, cx+elbowSpread, elbowY, COL.body);
+      line(ctx, cx+elbowSpread, elbowY, cx+handSpread, handY, COL.body);
+      // Sphere — small at start, brighter as it rises
+      const sA = 0.3 + h*0.7;
+      ctx.fillStyle=`rgba(232,212,160,${sA})`;
+      ctx.fillRect((cx-1)*PX, handY*PX, 3*PX, PX);
+      ctx.fillRect(cx*PX, (handY-1)*PX, PX, PX);
+      // Trail fading below — qi rising
+      for(let i=1;i<=4;i++){
+        const a=(0.4-i*0.08)*h;
+        ctx.fillStyle=`rgba(143,168,160,${Math.max(0,a)})`;
+        ctx.fillRect(cx*PX, (handY+i*2)*PX, PX, PX);
+      }
+    } else if(phase < 0.55){
+      // Pressing the sky — peak hold, arms straight up
+      const handY = cy - squat - 19;
+      line(ctx, cx-1, cy-squat-11, cx-1, cy-squat-15, COL.body);
+      line(ctx, cx-1, cy-squat-15, cx-1, handY, COL.body);
+      line(ctx, cx+1, cy-squat-11, cx+1, cy-squat-15, COL.body);
+      line(ctx, cx+1, cy-squat-15, cx+1, handY, COL.body);
+      // Bright sphere at apex, full glow
+      const radial = (phase-0.5)/0.05;
+      const apex = 0.9 + radial*0.1;
+      for(let dx=-2; dx<=2; dx++){
+        for(let dy=-1; dy<=1; dy++){
+          const d=Math.abs(dx)+Math.abs(dy);
+          ctx.fillStyle=`rgba(232,212,160,${apex*(1-d/4)})`;
+          ctx.fillRect((cx+dx)*PX,(handY+dy)*PX,PX,PX);
+        }
+      }
+    } else {
+      // Descending wings — hands open laterally and arc down to dan tian
+      const d = (phase-0.55)/0.45; // 0..1
+      // Hands sweep from up-overhead out to wide, then down to dan tian level
+      const angle = d * Math.PI; // 0=up, π=down
+      const radius = 9 - d*2;     // arc gets tighter
+      const handYOffset = -Math.cos(angle)*radius - Math.sin(angle)*4;
+      const handXOffset = Math.sin(angle)*radius;
+      const handY = cy-squat-11 + Math.round(handYOffset);
+      const handX = Math.round(handXOffset);
+      // Left arm
+      line(ctx, cx-1, cy-squat-11, cx-3, cy-squat-9, COL.body);
+      line(ctx, cx-3, cy-squat-9, cx-1-handX, handY, COL.body);
+      // Right arm
+      line(ctx, cx+1, cy-squat-11, cx+3, cy-squat-9, COL.body);
+      line(ctx, cx+3, cy-squat-9, cx+1+handX, handY, COL.body);
+      // Trailing wing glow — fades as descent progresses
+      const wA = (1-d)*0.5;
+      ctx.fillStyle=`rgba(200,169,110,${wA})`;
+      ctx.fillRect((cx-1-handX)*PX, handY*PX, PX, PX);
+      ctx.fillRect((cx+1+handX)*PX, handY*PX, PX, PX);
+    }
+    // Crown glow throughout
+    const cg = (phase>0.4 && phase<0.65) ? 1 : 0.3;
+    ctx.fillStyle=`rgba(232,212,160,${cg*0.4})`;
+    ctx.fillRect((cx-1)*PX, (cy-squat-19-Math.round(crownLift*2))*PX, 3*PX, PX);
+  },
+
+  // 5. Shaking the Tree — fascia release, fast loose shake throughout
+  shakeTree(ctx, t) {
+    bg(ctx);
+    // Fast shake noise — using sin/cos of high-frequency time for deterministic jitter
+    function jitter(seed, amp){
+      return (Math.sin(t*23 + seed*7.13) + Math.cos(t*31 + seed*4.37)) * 0.5 * amp;
+    }
+    const cx=33+jitter(1, 0.8), cy=57+jitter(2, 0.4);
+    const squat=2;
+    // Spine — each segment jitters slightly independently for that ripple
+    const sp=[];
+    for(let i=0;i<7;i++){
+      sp.push({dx:jitter(10+i, 1.0), dy:i*2 + jitter(20+i, 0.3)});
+    }
+    const verts=sp.map(o=>({x:cx+o.dx,y:cy-squat-o.dy}));
+    for(let i=0;i<verts.length-1;i++){
+      const col=(i>=2&&i<=4)?COL.spine:COL.body;
+      line(ctx,verts[i].x,verts[i].y,verts[i+1].x,verts[i+1].y,col);
+    }
+    // Head — jitters as one piece
+    const h=verts[6];
+    const hJx=jitter(30, 0.5), hJy=jitter(31, 0.3);
+    dot(ctx,h.x-1+hJx,h.y-1+hJy,COL.body);dot(ctx,h.x+hJx,h.y-1+hJy,COL.body);dot(ctx,h.x+1+hJx,h.y-1+hJy,COL.body);
+    dot(ctx,h.x+hJx,h.y-3+hJy,COL.body);dot(ctx,h.x-1+hJx,h.y+hJy,COL.body);dot(ctx,h.x+1+hJx,h.y+hJy,COL.body);
+    // Legs — wide stance, knees bouncing
+    const p=verts[0];
+    const kneeJ=jitter(40, 0.6);
+    line(ctx,p.x,p.y,p.x-5,p.y+1+kneeJ,COL.body); line(ctx,p.x-5,p.y+1+kneeJ,p.x-6,p.y+3,COL.body);
+    line(ctx,p.x,p.y,p.x+5,p.y+1-kneeJ,COL.body); line(ctx,p.x+5,p.y+1-kneeJ,p.x+6,p.y+3,COL.body);
+    // Arms hanging loose, rattling — high-frequency jitter at hand
+    const shY=verts[5].y, shXL=verts[5].x-1, shXR=verts[5].x+1;
+    const lhX=shXL-3+jitter(50, 1.5), lhY=shY+5+jitter(51, 1.5);
+    const rhX=shXR+3+jitter(52, 1.5), rhY=shY+5+jitter(53, 1.5);
+    line(ctx, shXL, shY, shXL-1, shY+3, COL.body);
+    line(ctx, shXL-1, shY+3, lhX, lhY, COL.body);
+    line(ctx, shXR, shY, shXR+1, shY+3, COL.body);
+    line(ctx, shXR+1, shY+3, rhX, rhY, COL.body);
+    // Release particles — small flecks dropping/scattering around figure
+    for(let i=0;i<8;i++){
+      const px = cx + jitter(60+i, 8);
+      const py = cy + jitter(70+i, 6);
+      const a = 0.3 + Math.abs(jitter(80+i, 0.7));
+      ctx.fillStyle=`rgba(143,168,160,${a*0.5})`;
+      ctx.fillRect(Math.round(px)*PX, Math.round(py)*PX, PX, PX);
+    }
+  },
+
+  // 6. Returning to the Center — feet parallel narrow, hands at dan tian, deep slow breath
+  returnCenter(ctx, t) {
+    bg(ctx);
+    const cx=33, cy=57;
+    const cycle=14;
+    const breath=(Math.sin(t*(2*Math.PI/cycle))+1)/2;
+    const sp=neutralSpine(0);
+    // Hands rest one over the other at the dan tian (low belly)
+    const handY = cy-3;
+    figure(ctx, cx, cy, sp,
+      [{x:cx-1,y:cy-11},{x:cx-2,y:cy-7},{x:cx-1,y:handY}],
+      [{x:cx+1,y:cy-11},{x:cx+2,y:cy-7},{x:cx+1,y:handY}],
+      2, 0
+    );
+    // One palm over the other — second hand slightly above first, both at dan tian
+    dot(ctx, cx-1, handY, COL.body);
+    dot(ctx, cx, handY, COL.body);
+    dot(ctx, cx+1, handY, COL.body);
+    dot(ctx, cx, handY-1, COL.spine);
+    // Dan tian glow — warm, breathing softly. This is charged stillness.
+    const glowA = 0.35 + breath*0.45;
+    for(let dy=-1;dy<=1;dy++){
+      for(let dx=-2;dx<=2;dx++){
+        const d=Math.abs(dx)*0.5+Math.abs(dy);
+        ctx.fillStyle=`rgba(184,92,56,${glowA*(1-d/3.5)})`;
+        ctx.fillRect((cx+dx)*PX, (handY+dy)*PX, PX, PX);
+      }
+    }
+    // Inner glow — heart embers settling
+    const heartA = 0.2 + breath*0.3;
+    ctx.fillStyle=`rgba(232,212,160,${heartA})`;
+    ctx.fillRect(cx*PX, (cy-9)*PX, PX, PX);
+    label(ctx, 2, 43, 'Dan Tian');
   }
 };
 
@@ -1234,7 +1614,14 @@ const breathPhrases = {
   adductorOpen:{ cycleDuration:12,   phases:[{label:'inhale · inner thighs soften',dur:4,curve:'rise'},{label:'exhale · settle deeper',dur:6,curve:'fall'},{label:'pause · sacrum heavy',dur:2,curve:'hold-bot'}] },
   sacralRock:  { cycleDuration:9,    phases:[{label:'inhale · sacrum tips back',dur:3.5,curve:'rise'},{label:'pause · perineum soft',dur:0.5,curve:'hold-top'},{label:'exhale · sacrum tucks · root activates',dur:5,curve:'fall'}] },
   legSweep:    { cycleDuration:11,   phases:[{label:'inhale · GB line extends forward',dur:4,curve:'rise'},{label:'exhale · sweep through to back',dur:5,curve:'fall'},{label:'pause · Bladder channel suspended',dur:2,curve:'hold-bot'}] },
-  earthSettle: { cycleDuration:12.5, phases:[{label:'inhale · qi rises',dur:5,curve:'rise'},{label:'pause · full',dur:0.5,curve:'hold-top'},{label:'exhale · qi settles to earth',dur:6,curve:'fall'},{label:'pause · arrive',dur:1,curve:'hold-bot'}] }
+  earthSettle: { cycleDuration:12.5, phases:[{label:'inhale · qi rises',dur:5,curve:'rise'},{label:'pause · full',dur:0.5,curve:'hold-top'},{label:'exhale · qi settles to earth',dur:6,curve:'fall'},{label:'pause · arrive',dur:1,curve:'hold-bot'}] },
+  // ── Wild Heaven — fierce yang sequence ─────────────────────────────────
+  gatherFire:   { cycleDuration:8,    phases:[{label:'inhale · ball expands',dur:4,curve:'rise'},{label:'exhale · ball condenses',dur:4,curve:'fall'}] },
+  pistonPull:   { cycleDuration:4,    phases:[{label:'inhale · gather · switch',dur:2,curve:'rise'},{label:'exhale · HA! · piston · pull',dur:2,curve:'fall'}] },
+  spiralDragon: { cycleDuration:6,    phases:[{label:'inhale · center · coil',dur:3,curve:'rise'},{label:'exhale · strike · waist drives',dur:3,curve:'fall'}] },
+  raiseSphere:  { cycleDuration:12,   phases:[{label:'inhale · sphere rises through centerline',dur:6,curve:'rise'},{label:'pause · press the sky',dur:1,curve:'hold-top'},{label:'exhale · wings descend to dan tian',dur:5,curve:'fall'}] },
+  shakeTree:    { cycleDuration:6,    phases:[{label:'inhale · loose · shaking',dur:2.5,curve:'rise'},{label:'exhale · let go · keep shaking',dur:3.5,curve:'fall'}] },
+  returnCenter: { cycleDuration:14,   phases:[{label:'inhale · quiet refill',dur:6,curve:'rise'},{label:'exhale · charge becomes warmth',dur:8,curve:'fall'}] }
 };
 
 function breathY(phrase, tInCycle) {
@@ -1315,7 +1702,7 @@ let cur=0, timeLeft=0, totalTime=0, timerInt=null, cueInt=null, running=false, b
 const CUE_ACTIVATE_AFTER_SEC=30; // Flat felt-time. Breath phase label leads alone for 30s, then karaoke spotlight wakes up.
 let activeSequence='godhole', activeMoves=moves;
 
-const SEQ_NAMES = { godhole:'Empty Pillar', lowerchain:'Earth Gate' };
+const SEQ_NAMES = { godhole:'Empty Pillar', lowerchain:'Earth Gate', wildheaven:'Wild Heaven' };
 
 function selectSequence(key) {
   activeSequence=key;
