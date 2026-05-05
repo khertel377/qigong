@@ -36,32 +36,7 @@
     opacity: 0.4;
   }
 
-  /* ── NAV ── */
-  nav {
-    display: flex;
-    border-bottom: 1px solid var(--warm);
-    background: var(--paper);
-    flex-shrink: 0;
-    z-index: 100;
-  }
-  nav button {
-    flex: 1;
-    padding: 12px 8px;
-    background: none;
-    border: none;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--ink);
-    opacity: 0.4;
-    cursor: pointer;
-    transition: opacity 0.2s;
-    border-bottom: 2px solid transparent;
-  }
-  nav button.active { opacity: 1; border-bottom: 2px solid var(--ember); color: var(--ember); }
-
-  /* Sequence label + dropdown in player-nav */
+  /* ── SEQUENCE LABEL + DROPDOWN IN PLAYER-NAV ── */
   .seq-label-wrap { position: relative; flex-shrink: 0; }
   .seq-label {
     display: flex;
@@ -147,11 +122,8 @@
   #player.paused .cue-item { color: rgba(26,22,18,0.7); }
   #player.paused .cue-item.cue-active { color: var(--ink); border-left-color: var(--ember); }
 
-  /* ── PANELS (study / explore / points) ── */
-  .panel { display: none; flex: 1; min-height: 0; overflow-y: auto; padding: 32px 24px 80px; max-width: 680px; margin: 0 auto; width: 100%; }
-  .panel.active { display: block; }
-  #practice { padding: 0; max-width: none; margin: 0; overflow: hidden; position: relative; }
-  #practice.active { display: flex; flex-direction: column; }
+  /* ── PRACTICE LAYOUT (full-height column) ── */
+  #practice { padding: 0; max-width: none; margin: 0; overflow: hidden; position: relative; flex: 1; min-height: 0; display: flex; flex-direction: column; }
 
   @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -405,39 +377,13 @@
   .complete-screen h2 { font-size: clamp(2rem, 4vw, 3rem); font-style: italic; font-weight: 300; margin-bottom: 12px; }
   .complete-screen p { font-size: 1.1rem; color: var(--mist); margin-bottom: 32px; font-style: italic; }
 
-  /* ── STUDY / EXPLORE / POINTS ── */
-  .section-title { font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--mist); margin-bottom: 20px; padding-bottom: 8px; border-bottom: 1px solid var(--fade); }
-  .knowledge-grid { display: grid; gap: 16px; margin-bottom: 40px; }
-  .knowledge-card { background: white; border: 1px solid rgba(200,169,110,0.25); padding: 18px 20px; border-radius: 2px; }
-  .knowledge-card h3 { font-size: 1.2rem; font-style: italic; font-weight: 300; margin-bottom: 6px; }
-  .knowledge-card .meta { font-family: 'Space Mono', monospace; font-size: 0.55rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ember); margin-bottom: 10px; }
-  .knowledge-card p { font-size: 0.95rem; line-height: 1.65; color: #3a3530; }
-  .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
-  .tag { font-family: 'Space Mono', monospace; font-size: 0.5rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 2px 8px; border-radius: 20px; background: var(--fade); color: var(--mist); }
-  .want-list { list-style: none; margin-bottom: 40px; }
-  .want-list li { padding: 14px 0; border-bottom: 1px solid var(--fade); display: flex; align-items: flex-start; gap: 14px; font-size: 1rem; line-height: 1.5; }
-  .want-icon { font-size: 0.7rem; color: var(--warm); margin-top: 4px; flex-shrink: 0; }
-  .want-list li .track { font-family: 'Space Mono', monospace; font-size: 0.5rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--mist); display: block; margin-top: 3px; }
-  .points-table { width: 100%; border-collapse: collapse; margin-bottom: 40px; }
-  .points-table th { font-family: 'Space Mono', monospace; font-size: 0.55rem; letter-spacing: 0.12em; text-transform: uppercase; text-align: left; padding: 8px 12px; border-bottom: 2px solid var(--warm); color: var(--mist); }
-  .points-table td { padding: 12px 12px; font-size: 0.92rem; border-bottom: 1px solid var(--fade); vertical-align: top; line-height: 1.5; }
-  .points-table tr:hover td { background: rgba(200,169,110,0.05); }
-  .point-name { font-family: 'Space Mono', monospace; font-size: 0.75rem; font-weight: 700; color: var(--ember); }
-
   ::-webkit-scrollbar { width: 4px; }
   ::-webkit-scrollbar-track { background: var(--paper); }
   ::-webkit-scrollbar-thumb { background: var(--warm); border-radius: 2px; }
 </style>
 </head>
 <body>
-<nav>
-  <button class="active" onclick="showPanel('practice',this)">Practice</button>
-  <button onclick="showPanel('study',this)">Learned</button>
-  <button onclick="showPanel('explore',this)">Exploring</button>
-  <button onclick="showPanel('points',this)">Points</button>
-</nav>
-
-<div id="practice" class="panel active">
+<div id="practice">
 
   <div id="splash">
     <div class="seq-intro">choose a sequence</div>
@@ -452,8 +398,8 @@
         <div class="seq-channels">Gallbladder · Liver<br>Bladder · Kidney · hip chain</div>
         <div class="seq-time">6 moves · ~11 min</div>
       </div>
-      <div class="seq-card" id="card-wildheaven" onclick="selectSequence('wildheaven')">
-        <h2>Wild Heaven</h2>
+      <div class="seq-card" id="card-goldenforge" onclick="selectSequence('goldenforge')">
+        <h2>Golden Forge</h2>
         <div class="seq-channels">Heart · Pericardium<br>Triple Burner · Liver yang</div>
         <div class="seq-time">6 moves · ~9 min · fierce</div>
       </div>
@@ -477,7 +423,7 @@
         <div class="seq-dropdown" id="seq-dropdown">
           <button class="active" id="seqdrop-godhole" onclick="switchSequenceInline('godhole')">Empty Pillar</button>
           <button id="seqdrop-lowerchain" onclick="switchSequenceInline('lowerchain')">Earth Gate</button>
-          <button id="seqdrop-wildheaven" onclick="switchSequenceInline('wildheaven')">Wild Heaven</button>
+          <button id="seqdrop-goldenforge" onclick="switchSequenceInline('goldenforge')">Golden Forge</button>
         </div>
       </div>
       <!-- Controls — pushed right -->
@@ -533,24 +479,6 @@
 
 </div>
 
-<div id="study" class="panel">
-  <div class="section-title">What We've Understood</div>
-  <div class="knowledge-grid" id="knowledge-grid"></div>
-</div>
-
-<div id="explore" class="panel">
-  <div class="section-title">Still Wanting to Learn</div>
-  <ul class="want-list" id="want-list"></ul>
-</div>
-
-<div id="points" class="panel">
-  <div class="section-title">Key Points — Empty Pillar Terrain</div>
-  <table class="points-table">
-    <thead><tr><th>Point</th><th>Name / Location</th><th>Relevance</th></tr></thead>
-    <tbody id="points-tbody"></tbody>
-  </table>
-</div>
-
 <script>
 // ═══════════════ DATA ════════════════════════════════════════
 const moves = [
@@ -572,24 +500,24 @@ const lowerChainMoves = [
   { name:"Closing Earth Stance", chinese:"歸根 / Guī gēn", duration:90, channel:"Spleen · Stomach · all lower channels", tempo:"Settling · very slow breath · continuous", description:"feet parallel, shoulder-width, arms at sides, eyes soft", cues:["Feet parallel, shoulder width — the earth receives you completely.","With each exhale, feel the lower body become heavier and more settled.","The Spleen channel runs the inner leg from foot to groin — feel it knitting.","The Stomach channel runs the front of the thigh — let it soften and release.","This move asks nothing of you — it only receives what the sequence has opened.","You are not finishing. You are arriving."], anim:'earthSettle' },
 ];
 
-// ── Wild Heaven — fierce/expressive yang sequence ──────────────────────────
+// ── Golden Forge — fierce/expressive yang sequence ─────────────────────────
 // The yang counterpart to Earth Gate. Heart · Pericardium · Triple Burner ·
 // Liver yang · Fire element. Built as a kata: gather → strike → spiral →
 // raise → release → return. Designed so each move's ending posture flows
 // into the next move's start (matters when flow mode lands).
-const wildHeavenMoves = [
+const goldenForgeMoves = [
   { name:"Gathering the Fire", chinese:"聚火 / Jù huǒ", duration:90, channel:"Triple Burner · Pericardium", tempo:"4-in / 4-out · ball expands and condenses", description:"horse stance, palms facing each other in front of dan tian, cradling a growing ember", cues:["Hands cradle a ball of qi at the dan tian — palms facing, not touching.","Inhale: hands draw apart and rise to chest, ball expanding outward.","Exhale: hands compress back toward dan tian, ball condensing denser.","Each cycle the ball grows hotter. Feel Laogong (PC-8) at each palm center light up.","This is the charging move. Don't rush — set the floor of the energy."], anim:'gatherFire' },
   { name:"Piston & Pull", chinese:"推拉 / Tuī lā", duration:90, channel:"Heart · Pericardium · Lung", tempo:"Sharp breath · 6 cycles per side · alternate", description:"horse stance, fists at hips, elbows back, ready to push and pull", cues:["One fist drives forward into a palm strike — fingers spreading at full extension.","The other fist simultaneously pulls back to the hip, gripping a heavy rope.","Sharp exhale — HA! — on each push. Two intentions, one breath.","The push comes from the spine through the kua, out through Laogong (PC-8).","The pull is active — shoulder blade gathers force back into the body.","Waist rotates slightly toward the pulling side. Then mirror."], anim:'pistonPull' },
   { name:"Spiraling Dragon", chinese:"盤龍 / Pán lóng", duration:90, channel:"Liver · Du Mai · Heart", tempo:"3-in / 3-out · 6 strikes per side", description:"horse stance, hands at chest, ready to spiral the spine", cues:["The waist drives the strike — not the arm. Spine rotates first.","Right palm strikes diagonally across the body, left palm pulls back to the hip.","Inhale at center, exhale on the strike. Then mirror to the other side.","Liver yang rising — channel runs up the inner leg, through the diaphragm, out the hand.","Eyes follow the striking palm. The whole body is the spear."], anim:'spiralDragon' },
   { name:"Raising the Sphere", chinese:"舉天球 / Jǔ tiān qiú", duration:90, channel:"Heart · Du Mai · all yang", tempo:"6-in long / 6-out long · 4 cycles · the peak", description:"horse stance, hands together at dan tian, palms up, cradling a sphere", cues:["Hands together at the dan tian, palms up, cradling a sphere of light.","Slow inhale: hands rise up the centerline — past navel, heart, throat, crown.","Above the head, palms turn upward and press the sky. Hold the peak.","Exhale: hands open wide and circle slowly down through wing arcs back to dan tian.","This is the peak. Sustained, not frantic. The whole body lifts and returns."], anim:'raiseSphere' },
-  { name:"Shaking the Tree", chinese:"抖樹 / Dǒu shù", duration:90, channel:"Triple Burner · all channels", tempo:"Fast loose shake · natural breath · let it find its rhythm", description:"wide stance, knees soft, arms hang loose, ready to shake fast and free", cues:["Whole body shakes — fast, loose, fascia-releasing. Arms hang and rattle.","Knees bounce gently. Let the spine ripple. Nothing is held tight.","Mouth slightly open. Breath is natural — sometimes audible exhales.","This is the dissipation. The charge built up has somewhere to go.","Don't perform the shake — let it happen. It finds its own rhythm.","Slow it down only when your body asks to settle."], anim:'shakeTree' },
-  { name:"Returning to the Center", chinese:"歸中 / Guī zhōng", duration:60, channel:"Heart · all channels", tempo:"6-in / 8-out · long and natural · ~6 cycles", description:"feet parallel, shoulder-width, hands resting one over the other at the dan tian", cues:["Feet narrow back to parallel, shoulder-width.","Hands rise slowly to the dan tian, one palm over the other.","The fire has been raised, expressed, shaken loose. Now it returns to the center.","This is charged stillness — a different flavor of arrival than gentle closing.","Long slow breath. Let the heat settle into the lower belly as warmth, not activation."], anim:'returnCenter' }
+  { name:"Shaking the Tree", chinese:"抖樹 / Dǒu shù", duration:60, channel:"Triple Burner · all channels", tempo:"Fast loose shake · natural breath · let it find its rhythm", description:"wide stance, knees soft, arms hang loose, ready to shake fast and free", cues:["Whole body shakes — fast, loose, fascia-releasing. Arms hang and rattle.","Knees bounce gently. Let the spine ripple. Nothing is held tight.","Mouth slightly open. Breath is natural — sometimes audible exhales.","This is the dissipation. The charge built up has somewhere to go.","Don't perform the shake — let it happen. It finds its own rhythm.","Slow it down only when your body asks to settle."], anim:'shakeTree' },
+  { name:"Returning to the Center", chinese:"歸中 / Guī zhōng", duration:90, channel:"Heart · all channels", tempo:"6-in / 8-out · long and natural · ~6 cycles", description:"feet parallel, shoulder-width, hands resting one over the other at the dan tian", cues:["Feet narrow back to parallel, shoulder-width.","Hands rise slowly to the dan tian, one palm over the other.","The fire has been raised, expressed, shaken loose. Now it returns to the center.","This is charged stillness — a different flavor of arrival than gentle closing.","Long slow breath. Let the heat settle into the lower belly as warmth, not activation."], anim:'returnCenter' }
 ];
 
 const sequences = {
   godhole:    { moves, completeMsg: 'Rest a moment. Let the axis settle.<br>The pillar — empty, present, alive.' },
   lowerchain: { moves: lowerChainMoves, completeMsg: 'Rest. Let the lower body integrate.<br>Feel the earth gate settling.' },
-  wildheaven: { moves: wildHeavenMoves, completeMsg: 'The fire is gathered, expressed, and returned.<br>Charged stillness. Heart at rest.' }
+  goldenforge: { moves: goldenForgeMoves, completeMsg: 'The fire is gathered, expressed, and returned.<br>Charged stillness. Heart at rest.' }
 };
 
 // ═══════════════ PIXEL ANIMATION ENGINE ══════════════════════
@@ -1240,7 +1168,7 @@ const anims = {
     }
   },
 
-  // ── Wild Heaven — fierce yang sequence ─────────────────────────────────
+  // ── Golden Forge — fierce yang sequence ─────────────────────────────────
 
   // 1. Gathering the Fire — horse stance, hands cradle a breathing ball at chest
   gatherFire(ctx, t) {
@@ -1615,7 +1543,7 @@ const breathPhrases = {
   sacralRock:  { cycleDuration:9,    phases:[{label:'inhale · sacrum tips back',dur:3.5,curve:'rise'},{label:'pause · perineum soft',dur:0.5,curve:'hold-top'},{label:'exhale · sacrum tucks · root activates',dur:5,curve:'fall'}] },
   legSweep:    { cycleDuration:11,   phases:[{label:'inhale · GB line extends forward',dur:4,curve:'rise'},{label:'exhale · sweep through to back',dur:5,curve:'fall'},{label:'pause · Bladder channel suspended',dur:2,curve:'hold-bot'}] },
   earthSettle: { cycleDuration:12.5, phases:[{label:'inhale · qi rises',dur:5,curve:'rise'},{label:'pause · full',dur:0.5,curve:'hold-top'},{label:'exhale · qi settles to earth',dur:6,curve:'fall'},{label:'pause · arrive',dur:1,curve:'hold-bot'}] },
-  // ── Wild Heaven — fierce yang sequence ─────────────────────────────────
+  // ── Golden Forge — fierce yang sequence ─────────────────────────────────
   gatherFire:   { cycleDuration:8,    phases:[{label:'inhale · ball expands',dur:4,curve:'rise'},{label:'exhale · ball condenses',dur:4,curve:'fall'}] },
   pistonPull:   { cycleDuration:4,    phases:[{label:'inhale · gather · switch',dur:2,curve:'rise'},{label:'exhale · HA! · piston · pull',dur:2,curve:'fall'}] },
   spiralDragon: { cycleDuration:6,    phases:[{label:'inhale · center · coil',dur:3,curve:'rise'},{label:'exhale · strike · waist drives',dur:3,curve:'fall'}] },
@@ -1702,7 +1630,7 @@ let cur=0, timeLeft=0, totalTime=0, timerInt=null, cueInt=null, running=false, b
 const CUE_ACTIVATE_AFTER_SEC=30; // Flat felt-time. Breath phase label leads alone for 30s, then karaoke spotlight wakes up.
 let activeSequence='godhole', activeMoves=moves;
 
-const SEQ_NAMES = { godhole:'Empty Pillar', lowerchain:'Earth Gate', wildheaven:'Wild Heaven' };
+const SEQ_NAMES = { godhole:'Empty Pillar', lowerchain:'Earth Gate', goldenforge:'Golden Forge' };
 
 function selectSequence(key) {
   activeSequence=key;
@@ -1884,12 +1812,6 @@ function resetPractice() {
   if(animRaf)cancelAnimationFrame(animRaf);
   if(arcRaf)cancelAnimationFrame(arcRaf);
 }
-function showPanel(id,btn) {
-  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  btn.classList.add('active');
-}
 
 document.addEventListener('click', e => {
   const wrap=document.getElementById('seq-label-wrap');
@@ -1902,43 +1824,8 @@ document.addEventListener('keydown', e => {
   else if(e.key==='ArrowLeft'){e.preventDefault();prevMove();}
 });
 
-// ═══════════════ STUDY / EXPLORE / POINTS DATA ═══════════════
-const knowledgeItems=[
-  {title:"The Syrinx as Constitutional Koan",meta:"TCM + Zen Lens",body:"The God Hole (T3–T10 syrinx, up to 2mm) is likely congenital — a constitutional Du Mai thinness. In TCM: reduced Marrow density governed by Kidney. In Zen: a place of heightened sensitivity where participation shapes experience. Neither problem nor obstacle.",tags:["Du Mai","Kidney Marrow","Syrinx","Constitutional"]},
-  {title:"Core Engagement = Chong Mai Activation",meta:"Biomechanics + TCM",body:"Engaging transversus abdominis and deep multifidi creates intra-abdominal pressure stabilization, reducing compressive load on thoracic vertebrae. In TCM this is Chong Mai (Penetrating Vessel) — Sea of Qi and Blood through the body's core. Zazen posture is its optimal physical expression.",tags:["Chong Mai","Core","Posture","Zazen"]},
-  {title:"Jia Ji — The Middle Gate",meta:"Taoist Inner Alchemy",body:"Three 'gates' along the Du Mai: Wei Lu (sacrum), Jia Ji (mid-thoracic T5-T9), Yu Zhen (occiput). The God Hole sits at Jia Ji — classically the hardest gate, holding habitual tension. Post-sesshin jolts are Qi 'rushing the pass.' The practice is widening, not forcing.",tags:["Jia Ji","Three Gates","Du Mai","Nei Dan"]},
-  {title:"Posture Cue: Crown Rising > Shoulders Back",meta:"Applied Qi Gong",body:"'Shoulders back' creates an unsustainable correction. 'Crown floats upward' works with Du Mai logic — thoracic kyphosis naturally reduces, shoulders find alignment as consequence. A channel cue rather than a postural correction. 30% of zazen awareness at the desk is the goal.",tags:["Posture","Du Mai","Qi Gong Cue"]},
-  {title:"Spinal Wave Tempo",meta:"Practice Calibration",body:"One full wave = 4–5 seconds = one breath cycle. Inhale drives extension (spine opens forward, sacrum to neck). Exhale drives rounding. At this speed you feel each vertebral segment individually. God Hole zone should soften and follow — not lead, not tighten.",tags:["Wave","Tempo","Du Mai","Breath"]},
-  {title:"Mu Transmission + Ascending Current",meta:"Zen + Physiology",body:"Post-sesshin breakthrough moments produce real neurophysiological surges — autonomic reorganization after deep stillness. The God Hole as a zone of heightened sensitivity acts as a vivid receiver. The jolts are the channel being traversed. The current is healthy; the practice is widening.",tags:["Koan","Kundalini","Du Mai","Sesshin","Awakening"]}
-];
-const wantToLearn=[
-  {text:"Extraordinary Vessels in depth — Du Mai and Chong Mai clinical theory; distal vs. local access",track:"CUCM · Acupuncture Theory"},
-  {text:"Medical Qi Gong certification track — clinical side practice alongside acupuncture",track:"CUCM · MSAOM Program"},
-  {text:"Tui Na spinal channel work — Hua Tuo Jia Ji paravertebral techniques",track:"CUCM · Bodywork Track"},
-  {text:"Nei Dan (Taoist inner alchemy) — classical texts on three gates and ascending current",track:"Self Study · Taoist Texts"},
-  {text:"Kidney Marrow theory — TCM understanding of spinal cord, brain, and ancestral essence (Jing)",track:"CUCM · Foundations"},
-  {text:"CSF pulsatility and intrathecal pressure in meditation vs. exertion — Western research",track:"Research · Neuroscience"},
-  {text:"Hakim Tafari's lineage — what forms and tradition underlie his Spirit Rock teaching style",track:"Practice · Lineage Research"},
-  {text:"Pranayama and Lung/Kidney meridian relationships — how yogic breath maps onto TCM channel theory",track:"Cross-System · Yoga + TCM"},
-  {text:"MSAOM program at CUCM — full curriculum review as a retirement practice path",track:"CUCM · Admissions"}
-];
-const points=[
-  {name:"GV-4",fullName:"Mingmen / Gate of Life",location:"L2–L3 spinous process",relevance:"Root of Du Mai. Anchors the ascending current. Tonifies Kidney Yang. Key grounding point after intense practice."},
-  {name:"GV-14",fullName:"Dazhui / Great Hammer",location:"C7-T1 junction",relevance:"Meeting of all Yang channels. Opens Du Mai from above. Counterbalances Jia Ji blockage."},
-  {name:"BL-15",fullName:"Xin Shu / Heart Shu",location:"T5, 1.5 cun lateral",relevance:"Back-Shu of Heart. Near T5-T6 disc bulge. Calms Shen. Relevant to post-sesshin ecstatic states."},
-  {name:"BL-17",fullName:"Ge Shu / Diaphragm Shu",location:"T7, 1.5 cun lateral",relevance:"Influential point for Blood. T8-T9 level. Opens diaphragm, moves upper back stagnation."},
-  {name:"KD-1",fullName:"Yongquan / Gushing Spring",location:"Sole of foot, anterior 1/3",relevance:"Root of Kidney channel. Grounds descending energy. Start of Kidney Breath visualization."},
-  {name:"KD-3",fullName:"Taixi / Supreme Stream",location:"Behind medial malleolus",relevance:"Source point of Kidney. Nourishes Marrow. Ask acupuncturist to include for spinal vitality."},
-  {name:"Jia Ji",fullName:"Hua Tuo Paravertebral",location:"0.5 cun lateral to spinous processes",relevance:"Flanks the God Hole zone without entering it. Safer than direct Du Mai needling at syrinx level."},
-  {name:"GV-20",fullName:"Baihui / Hundred Meetings",location:"Crown of head",relevance:"Top of Du Mai. The 'crown floating upward' cue points here. Opens channel from above."}
-];
-function renderStudy(){document.getElementById('knowledge-grid').innerHTML=knowledgeItems.map(k=>`<div class="knowledge-card"><div class="meta">${k.meta}</div><h3>${k.title}</h3><p>${k.body}</p><div class="tag-row">${k.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div></div>`).join('');}
-function renderExplore(){document.getElementById('want-list').innerHTML=wantToLearn.map(w=>`<li><span class="want-icon">○</span><span>${w.text}<span class="track">${w.track}</span></span></li>`).join('');}
-function renderPoints(){document.getElementById('points-tbody').innerHTML=points.map(p=>`<tr><td><span class="point-name">${p.name}</span></td><td>${p.fullName}<br><small style="color:var(--mist);font-family:'Space Mono',monospace;font-size:0.55rem">${p.location}</small></td><td>${p.relevance}</td></tr>`).join('');}
-
 // ═══════════════ INIT ════════════════════════════════════════
 renderDots();renderCues();updateMoveId();
-renderStudy();renderExplore();renderPoints();
 updateAnimForMove(0);
 </script>
 </body>
